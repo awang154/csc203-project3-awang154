@@ -61,7 +61,7 @@ public final class VirtualWorld extends PApplet {
     }
 
     public void update(double frameTime){
-        Functions.updateOnTime(scheduler, frameTime);
+        EventScheduler.updateOnTime(scheduler, frameTime);
     }
 
     // Just for debugging and for P5
@@ -70,7 +70,7 @@ public final class VirtualWorld extends PApplet {
         Point pressed = mouseToPoint();
         System.out.println("CLICK! " + pressed.x + ", " + pressed.y);
 
-        Optional<Entity> entityOptional = Functions.getOccupant(world, pressed);
+        Optional<Entity> entityOptional = WorldModel.getOccupant(world, pressed);
         if (entityOptional.isPresent()) {
             Entity entity = entityOptional.get();
             System.out.println(entity.id + ": " + entity.kind + " : " + entity.health);
@@ -104,7 +104,7 @@ public final class VirtualWorld extends PApplet {
     }
 
     public static Background createDefaultBackground(ImageStore imageStore) {
-        return new Background(DEFAULT_IMAGE_NAME, Functions.getImageList(imageStore, DEFAULT_IMAGE_NAME));
+        return new Background(DEFAULT_IMAGE_NAME, imageStore.getImageList(imageStore, DEFAULT_IMAGE_NAME));
     }
 
     public static PImage createImageColored(int width, int height, int color) {

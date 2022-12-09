@@ -37,5 +37,16 @@ public final class EventScheduler {
         }
     }
 
+    public static void updateOnTime(EventScheduler scheduler, double time) {
+        double stopTime = scheduler.currentTime + time;
+        while (!scheduler.eventQueue.isEmpty() && scheduler.eventQueue.peek().time <= stopTime) {
+            Event next = scheduler.eventQueue.poll();
+            Event.removePendingEvent(scheduler, next);
+            scheduler.currentTime = next.time;
+            Action.executeAction(next.action, scheduler);
+        }
+        scheduler.currentTime = stopTime;
+    }
+
 
 }

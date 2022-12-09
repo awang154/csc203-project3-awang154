@@ -20,7 +20,7 @@ public final class Background {
         for (int row = 0; row < view.viewport.numRows; row++) {
             for (int col = 0; col < view.viewport.numCols; col++) {
                 Point worldPoint = VirtualWorld.viewportToWorld(view.viewport, col, row);
-                Optional<PImage> image = Functions.getBackgroundImage(view.world, worldPoint);
+                Optional<PImage> image = getBackgroundImage(view.world, worldPoint);
                 if (image.isPresent()) {
                     view.screen.image(image.get(), col * view.tileWidth, row * view.tileHeight);
                 }
@@ -41,8 +41,16 @@ public final class Background {
         if(row < world.numRows){
             int rows = Math.min(cells.length, world.numCols);
             for (int col = 0; col < rows; col++){
-                world.background[row][col] = new Background(cells[col], Functions.getImageList(imageStore, cells[col]));
+                world.background[row][col] = new Background(cells[col], imageStore.getImageList(imageStore, cells[col]));
             }
+        }
+    }
+
+    public static Optional<PImage> getBackgroundImage(WorldModel world, Point pos) {
+        if (WorldModel.withinBounds(world, pos)) {
+            return Optional.of(ImageStore.getCurrentImage(Background.getBackgroundCell(world, pos)));
+        } else {
+            return Optional.empty();
         }
     }
 }

@@ -44,19 +44,19 @@ public final class Entity {
     }
 
     public static void addEntity(WorldModel world, Entity entity) {
-        if (Functions.withinBounds(world, entity.position)) {
-            Functions.setOccupancyCell(world, entity.position, entity);
+        if (WorldModel.withinBounds(world, entity.position)) {
+            WorldModel.setOccupancyCell(world, entity.position, entity);
             world.entities.add(entity);
         }
     }
 
     public static void moveEntity(WorldModel world, EventScheduler scheduler, Entity entity, Point pos) {
         Point oldPos = entity.position;
-        if (Functions.withinBounds(world, pos) && !pos.equals(oldPos)) {
-            Functions.setOccupancyCell(world, oldPos, null);
-            Optional<Entity> occupant = Functions.getOccupant(world, pos);
+        if (WorldModel.withinBounds(world, pos) && !pos.equals(oldPos)) {
+            WorldModel.setOccupancyCell(world, oldPos, null);
+            Optional<Entity> occupant = WorldModel.getOccupant(world, pos);
             occupant.ifPresent(target -> removeEntity(world, scheduler, target));
-            Functions.setOccupancyCell(world, pos, entity);
+            WorldModel.setOccupancyCell(world, pos, entity);
             entity.position = pos;
         }
     }
@@ -67,19 +67,19 @@ public final class Entity {
     }
 
     public static void removeEntityAt(WorldModel world, Point pos) {
-        if (Functions.withinBounds(world, pos) && Functions.getOccupancyCell(world, pos) != null) {
-            Entity entity = Functions.getOccupancyCell(world, pos);
+        if (WorldModel.withinBounds(world, pos) && WorldModel.getOccupancyCell(world, pos) != null) {
+            Entity entity = WorldModel.getOccupancyCell(world, pos);
 
             /* This moves the entity just outside of the grid for
              * debugging purposes. */
             entity.position = new Point(-1, -1);
             world.entities.remove(entity);
-            Functions.setOccupancyCell(world, pos, null);
+            WorldModel.setOccupancyCell(world, pos, null);
         }
     }
 
     public static void tryAddEntity(WorldModel world, Entity entity) {
-        if (Functions.isOccupied(world, entity.position)) {
+        if (WorldModel.isOccupied(world, entity.position)) {
             // arguably the wrong type of exception, but we are not
             // defining our own exceptions yet
             throw new IllegalArgumentException("position occupied");
@@ -118,10 +118,10 @@ public final class Entity {
             return Optional.empty();
         } else {
             Entity nearest = entities.get(0);
-            int nearestDistance = Functions.distanceSquared(nearest.position, pos);
+            int nearestDistance = Point.distanceSquared(nearest.position, pos);
 
             for (Entity other : entities) {
-                int otherDistance = Functions.distanceSquared(other.position, pos);
+                int otherDistance = Point.distanceSquared(other.position, pos);
 
                 if (otherDistance < nearestDistance) {
                     nearest = other;
@@ -142,5 +142,40 @@ public final class Entity {
                 view.screen.image(ImageStore.getCurrentImage(entity), viewPoint.x * view.tileWidth, viewPoint.y * view.tileHeight);
             }
         }
+    }
+
+    public static Entity createHouse(String id, Point position, List<PImage> images) {
+        return new Entity(EntityKind.HOUSE, id, position, images, 0, 0, 0, 0, 0, 0);
+    }
+
+    public static Entity createObstacle(String id, Point position, double animationPeriod, List<PImage> images) {
+        return new Entity(EntityKind.OBSTACLE, id, position, images, 0, 0, 0, animationPeriod, 0, 0);
+    }
+
+    public static Entity createTree(String id, Point position, double actionPeriod, double animationPeriod, int health, List<PImage> images) {
+        return new Entity(EntityKind.TREE, id, position, images, 0, 0, actionPeriod, animationPeriod, health, 0);
+    }
+
+    public static Entity createStump(String id, Point position, List<PImage> images) {
+        return new Entity(EntityKind.STUMP, id, position, images, 0, 0, 0, 0, 0, 0);
+    }
+
+    // health starts at 0 and builds up until ready to convert to Tree
+    public static Entity createSapling(String id, Point position, List<PImage> images, int health) {
+        return new Entity(EntityKind.SAPLING, id, position, images, 0, 0, Functions.SAPLING_ACTION_ANIMATION_PERIOD, Functions.SAPLING_ACTION_ANIMATION_PERIOD, 0, Functions.SAPLING_HEALTH_LIMIT);
+    }
+
+    public static Entity createFairy(String id, Point position, double actionPeriod, double animationPeriod, List<PImage> images) {
+        return new Entity(EntityKind.FAIRY, id, position, images, 0, 0, actionPeriod, animationPeriod, 0, 0);
+    }
+
+    // need resource count, though it always starts at 0
+    public static Entity createDudeNotFull(String id, Point position, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images) {
+        return new Entity(EntityKind.DUDE_NOT_FULL, id, position, images, resourceLimit, 0, actionPeriod, animationPeriod, 0, 0);
+    }
+
+    // don't technically need resource count ... full
+    public static Entity createDudeFull(String id, Point position, double actionPeriod, double animationPeriod, int resourceLimit, List<PImage> images) {
+        return new Entity(EntityKind.DUDE_FULL, id, position, images, resourceLimit, 0, actionPeriod, animationPeriod, 0, 0);
     }
 }

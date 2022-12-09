@@ -2,7 +2,7 @@ import processing.core.PImage;
 
 import java.util.List;
 
-abstract class thing {
+abstract class Sprite {
     //String objName = "";
     EntityKind kind;
     String id;
@@ -18,7 +18,7 @@ abstract class thing {
     int healthLimit;
 
 
-    thing (EntityKind kind, Point position, List<PImage> images, int resourceCount, int resourceLimit, double actionPeriod, double animationPeriod, int health, int healthLimit){
+    Sprite (EntityKind kind, Point position, List<PImage> images, int resourceCount, int resourceLimit, double actionPeriod, double animationPeriod, int health, int healthLimit){
         this.kind = kind;
         this.position = position;
         this.images = images;

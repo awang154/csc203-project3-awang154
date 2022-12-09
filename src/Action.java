@@ -6,19 +6,18 @@ import java.util.Optional;
 /**
  * An action that can be taken by an entity
  */
-public final class Action {
+public final class Action extends ActionClass{
+    /*
     public ActionKind kind;
     public Entity entity;
     public WorldModel world;
-    public ImageStore imageStore;
     public int repeatCount;
+    public ImageStore imageStore;
+
+     */
 
     public Action(ActionKind kind, Entity entity, WorldModel world, ImageStore imageStore, int repeatCount) {
-        this.kind = kind;
-        this.entity = entity;
-        this.world = world;
-        this.imageStore = imageStore;
-        this.repeatCount = repeatCount;
+        super(kind, entity, world, imageStore, repeatCount);
     }
 
     public static void executeDudeNotFullActivity(Entity entity, WorldModel world, ImageStore imageStore, EventScheduler scheduler) {

@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * An action that can be taken by an entity
  */
-public final class Action extends ActionClass{
+public final class Action extends Animation {
     /*
     public ActionKind kind;
     public Entity entity;

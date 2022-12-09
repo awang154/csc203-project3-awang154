@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import processing.core.PImage;
@@ -8,7 +7,7 @@ import processing.core.PImage;
  * An entity that exists in the world. See EntityKind for the
  * different kinds of entities that exist.
  */
-public final class Entity extends Sprite {
+public final class Entity extends Refactor {
 
     /*
     public EntityKind kind;

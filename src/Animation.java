@@ -1,11 +1,11 @@
-abstract class ActionClass {
+abstract class Animation {
     ActionKind kind;
     Entity entity;
     WorldModel world;
     int repeatCount;
     ImageStore imageStore;
 
-    ActionClass (ActionKind kind, Entity entity, WorldModel world, ImageStore imageStore, int repeatCount){
+    Animation(ActionKind kind, Entity entity, WorldModel world, ImageStore imageStore, int repeatCount){
         this.kind = kind;
         this.entity = entity;
         this.world = world;

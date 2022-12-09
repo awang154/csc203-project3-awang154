@@ -8,7 +8,9 @@ import processing.core.PImage;
  * An entity that exists in the world. See EntityKind for the
  * different kinds of entities that exist.
  */
-public final class Entity {
+public final class Entity extends thing {
+
+    /*
     public EntityKind kind;
     public String id;
     public Point position;
@@ -17,10 +19,13 @@ public final class Entity {
     public int resourceLimit;
     public int resourceCount;
     public double actionPeriod;
-    public double animationPeriod;
     public int health;
     public int healthLimit;
+    public double animationPeriod;
 
+     */
+
+    /*
     public Entity(EntityKind kind, String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit) {
         this.kind = kind;
         this.id = id;
@@ -35,9 +40,15 @@ public final class Entity {
         this.healthLimit = healthLimit;
     }
 
+     */
+    public Entity(EntityKind kind, String id, Point position, List<PImage> images, int resourceLimit, int resourceCount, double actionPeriod, double animationPeriod, int health, int healthLimit) {
+
+        super(kind,position, images, resourceCount, resourceLimit, actionPeriod, animationPeriod, health, healthLimit);
+    }
     /**
      * Helper method for testing. Preserve this functionality while refactoring.
      */
+    @Override
     public String log(){
         return this.id.isEmpty() ? null :
                 String.format("%s %d %d %d", this.id, this.position.x, this.position.y, this.imageIndex);
